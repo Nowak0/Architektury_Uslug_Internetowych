@@ -56,6 +56,6 @@ public class Franchise implements Comparable<Franchise>, Serializable {
                 "name = '" + name + '\'' +
                 ", city = '" + city + '\'' +
                 ", titles = " + titles +
-                "}";
+                ", id = " + id + "}";
     }
 }

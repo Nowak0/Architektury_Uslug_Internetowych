@@ -40,6 +40,7 @@ public class ConsoleRunner implements CommandLineRunner {
                 case "list players" -> listPlayers();
                 case "add player" -> addPlayer(scanner);
                 case "delete player" -> deletePlayer(scanner);
+                case "delete franchise" -> deleteFranchise(scanner);
                 case "exit" -> running = false;
                 default -> System.out.println("Unknown command. Type 'help' for a list of commands.");
             }
@@ -56,6 +57,7 @@ public class ConsoleRunner implements CommandLineRunner {
                 - list players
                 - add player
                 - delete player
+                - delete franchise
                 - exit
                 """);
     }
@@ -115,6 +117,30 @@ public class ConsoleRunner implements CommandLineRunner {
         System.out.println("New player has been created");
     }
 
+    private void deletePlayer(Scanner scanner) {
+        listPlayers();
+        System.out.println("Enter player id to delete: ");
+        String id = scanner.nextLine();
+        try {
+            playerService.deleteById(UUID.fromString(id));
+            System.out.println("Player deleted successfully");
+        } catch(Exception e) {
+            System.out.println("Error while deleting player");
+        }
+    }
+
+    private void deleteFranchise(Scanner scanner) {
+        listFranchises();
+        System.out.println("Enter franchise id to delete: ");
+        String id = scanner.nextLine();
+        try {
+            franchiseService.deleteById(UUID.fromString(id));
+            System.out.println("Franchise deleted successfully");
+        } catch(Exception e) {
+            System.out.println("Error while deleting franchise");
+        }
+    }
+
     private Position castPosition(String chosenPosition) {
         Position position;
         if (chosenPosition.equals("guard")) {
@@ -128,15 +154,5 @@ public class ConsoleRunner implements CommandLineRunner {
         return position;
     }
 
-    private void deletePlayer(Scanner scanner) {
-        listPlayers();
-        System.out.println("Enter player id to delete: ");
-        String id = scanner.nextLine();
-        try {
-            playerService.deleteById(UUID.fromString(id));
-            System.out.println("Player deleted successfully");
-        } catch(Exception e) {
-            System.out.println("Error while deleting player");
-        }
-    }
+
 }

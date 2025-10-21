@@ -20,23 +20,23 @@ public class FranchiseService {
         return franchiseRepository.findAll();
     }
 
-    public Optional<Franchise> findByFranchiseId(UUID franchiseId) {
+    public Optional<Franchise> findById(UUID franchiseId) {
         return franchiseRepository.findById(franchiseId);
     }
 
-    public Optional<Franchise> findByFranchiseName(String franchiseName) {
+    public Optional<Franchise> findByName(String franchiseName) {
         return franchiseRepository.findByName(franchiseName);
     }
 
-    public void saveFranchise(Franchise franchise) {
+    public void save(Franchise franchise) {
         franchiseRepository.save(franchise);
     }
 
-    public void deleteFranchise(Franchise franchise) {
+    public void delete(Franchise franchise) {
         franchiseRepository.delete(franchise);
     }
 
-    public void deleteFranchiseById(UUID id) {
+    public void deleteById(UUID id) {
         franchiseRepository.deleteById(id);
     }
 }
