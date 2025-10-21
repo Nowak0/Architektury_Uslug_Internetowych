@@ -3,11 +3,13 @@ package nba.project.service;
 import nba.project.entity.Franchise;
 import nba.project.entity.Player;
 import nba.project.repository.PlayerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class PlayerService {
     private final PlayerRepository playerRepository;
 
@@ -23,8 +25,8 @@ public class PlayerService {
         return playerRepository.findById(id);
     }
 
-    public Player save(Player player) {
-        return playerRepository.save(player);
+    public void save(Player player) {
+        playerRepository.save(player);
     }
 
     public void deleteById(UUID id) {

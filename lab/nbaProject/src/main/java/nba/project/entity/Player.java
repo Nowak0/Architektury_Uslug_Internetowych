@@ -47,7 +47,8 @@ public class Player implements Comparable<Player>, Serializable {
 
         return "Player {" + firstName + " " + lastName +
                 " (" + position + "), age = " + age +
-                ", franchise = " + franchiseName + "}";
+                ", franchise = " + franchiseName +
+                ", id = " + id + "}";
     }
 
     public PlayerDTO toDTO() {
