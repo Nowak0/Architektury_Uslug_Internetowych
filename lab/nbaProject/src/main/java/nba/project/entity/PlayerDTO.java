@@ -1,7 +1,5 @@
 package nba.project.entity;
-
 import lombok.*;
-
 import java.io.Serializable;
 
 @Data

@@ -1,10 +1,6 @@
 package nba.project.tasks;
 
-import nba.project.entity.Franchise;
-import nba.project.entity.Player;
-import nba.project.entity.PlayerDTO;
-import nba.project.entity.Position;
-
+import nba.project.entity.*;
 import java.io.*;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +33,7 @@ public class Lab1 {
         Set<Player> players = franchises.stream()
                 .flatMap(f -> f.getPlayers().stream())
                 .collect(Collectors.toSet());
-        players.stream()
-                .forEach(System.out::println);
+        players.forEach(System.out::println);
     }
 
     public static void task4(List<Franchise> franchises) {
@@ -82,7 +77,7 @@ public class Lab1 {
     }
 
     public static void task7(List<Franchise> franchises) {
-        ForkJoinPool pool = new ForkJoinPool(2);
+        ForkJoinPool pool = new ForkJoinPool(3);
 
         try {
             pool.submit(() -> franchises.parallelStream()
