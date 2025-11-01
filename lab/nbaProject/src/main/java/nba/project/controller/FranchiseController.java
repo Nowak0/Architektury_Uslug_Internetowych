@@ -7,6 +7,7 @@ import nba.project.dto.franchise.FranchiseReadDTO;
 import nba.project.entity.Franchise;
 import nba.project.mapper.FranchiseMapper;
 import nba.project.service.FranchiseService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/franchise")
+@RequestMapping("/api/franchises")
 @RequiredArgsConstructor
 public class FranchiseController {
     private final FranchiseService franchiseService;
@@ -42,8 +43,9 @@ public class FranchiseController {
 
     @PostMapping
     public ResponseEntity<FranchiseReadDTO> create(@RequestBody FranchiseCreateUpdateDTO dto) {
-        franchiseService.save(franchiseMapper.toEntity(dto));
-        return ResponseEntity.ok(franchiseMapper.toReadDTO(franchiseMapper.toEntity(dto)));
+        Franchise saved = franchiseService.save(franchiseMapper.toEntity(dto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(franchiseMapper.toReadDTO(saved));
     }
 
     @PutMapping("/{id}")
@@ -51,7 +53,7 @@ public class FranchiseController {
         if(franchiseService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            franchiseService.update(id, franchiseMapper.toEntity(dto));
+            franchiseService.update(id, dto);
             Franchise updated = franchiseService.findById(id).orElseThrow();
             return ResponseEntity.ok(franchiseMapper.toReadDTO(updated));
         }

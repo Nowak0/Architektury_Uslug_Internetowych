@@ -30,19 +30,8 @@ public class FranchiseService {
         return franchiseRepository.findByName(franchiseName);
     }
 
-    public void save(Franchise franchise) {
-        franchiseRepository.save(franchise);
-    }
-
-    public void update(UUID id, Franchise given_franchise) {
-        Franchise existingFranchise = franchiseRepository.findById(id).orElseThrow();
-        existingFranchise.setName(given_franchise.getName());
-        existingFranchise.setCity(given_franchise.getCity());
-        existingFranchise.setConference(given_franchise.getConference());
-        existingFranchise.setCurrentPosition(given_franchise.getCurrentPosition());
-        existingFranchise.setTitles(given_franchise.getTitles());
-
-        franchiseRepository.save(existingFranchise);
+    public Franchise save(Franchise franchise) {
+        return franchiseRepository.save(franchise);
     }
 
     public void update(UUID id, FranchiseCreateUpdateDTO dto) {

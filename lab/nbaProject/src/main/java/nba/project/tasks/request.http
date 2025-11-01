@@ -1,0 +1,32 @@
+### Get all franchises
+GET http://localhost:8080/api/franchises
+Accept: application/json
+
+### Create franchise
+POST http://localhost:8080/api/franchises
+Content-Type: application/json
+
+{
+  "name": "Los Angeles Lakers",
+  "city": "Los Angeles",
+  "conference": "West",
+  "titles": 17,
+  "currentPosition": 3
+}
+
+### Add player to franchise
+@add_id = 7532d61f-298c-4ba2-9811-c9cd264221ad
+POST http://localhost:8080/api/franchises/{{add_id}}/players
+Content-Type: application/json
+
+{
+  "firstName": "Lebron",
+  "lastName": "James",
+  "age": 38,
+  "position": "FORWARD"
+}
+
+### Delete player
+@del_id = 3b3b213e-da0d-4751-bdeb-9dde5816ec3c
+DELETE http://localhost:8080/api/players/{{del_id}}
+Accept: application/json

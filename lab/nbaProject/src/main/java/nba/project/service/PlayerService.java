@@ -1,7 +1,9 @@
 package nba.project.service;
 
+import nba.project.dto.player.PlayerCreateUpdateDTO;
 import nba.project.entity.Franchise;
 import nba.project.entity.Player;
+import nba.project.entity.Position;
 import nba.project.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,37 @@ public class PlayerService {
         return playerRepository.findById(id);
     }
 
-    public void save(Player player) {
+    public Player save(Player player) {
+        return playerRepository.save(player);
+    }
+
+    public Player update(UUID id, PlayerCreateUpdateDTO dto) {
+        Player player = findById(id).orElseThrow();
+
+        player.setFirstName(dto.getFirstName());
+        player.setLastName(dto.getLastName());
+        player.setAge(dto.getAge());
+        player.setPosition(dto.getPosition());
+
+        return save(player);
+    }
+
+    public Player transfer(Player player, Franchise franchise) {
+        player.setFranchise(franchise);
+        return save(player);
+    }
+
+    public Player addToFranchise(PlayerCreateUpdateDTO dto, Franchise franchise) {
+        Player player = new Player();
+        player.setId(UUID.randomUUID());
+        player.setFirstName(dto.getFirstName());
+        player.setLastName(dto.getLastName());
+        player.setAge(dto.getAge());
+        player.setPosition(dto.getPosition());
+        player.setFranchise(franchise);
+
         playerRepository.save(player);
+        return player;
     }
 
     public void deleteById(UUID id) {
@@ -43,5 +74,20 @@ public class PlayerService {
 
     public List<Player> findByFranchiseName(String franchiseName) {
         return playerRepository.findByFranchiseName(franchiseName);
+    }
+
+    public Position mapPlayerPosition(String position) {
+        if (position == null) {return null;}
+
+        position = position.toUpperCase();
+        if(position.equals("GUARD")) {
+            return Position.GUARD;
+        }
+        if(position.equals("FORWARD")) {
+            return Position.FORWARD;
+        }
+        else {
+            return Position.CENTER;
+        }
     }
 }
