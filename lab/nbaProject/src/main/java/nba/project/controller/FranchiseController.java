@@ -61,6 +61,10 @@ public class FranchiseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?>  delete(@PathVariable UUID id) {
+        if(franchiseService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         franchiseService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

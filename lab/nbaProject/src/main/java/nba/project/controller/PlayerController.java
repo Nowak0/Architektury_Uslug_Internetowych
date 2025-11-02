@@ -32,6 +32,15 @@ public class PlayerController {
                 .toList();
     }
 
+    @GetMapping("/players/{id}")
+    public ResponseEntity<PlayerReadDTO> getPlayer(@PathVariable UUID id) {
+        Optional<Player> player = playerService.findById(id);
+        if(player.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(playerMapper.toReadDTO(player.get()));
+    }
+
     @GetMapping("/franchises/{id}/players")
     public ResponseEntity<List<PlayerListDTO>> getAllPlayersFromFranchise(@PathVariable UUID id) {
         if(franchiseService.findById(id).isEmpty()) {
@@ -80,6 +89,10 @@ public class PlayerController {
 
     @DeleteMapping("/players/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
+        if(playerService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         playerService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

@@ -2,6 +2,20 @@
 GET http://localhost:8080/api/franchises
 Accept: application/json
 
+### Get franchise
+@get_franchise_id =ecd4944a-7212-4d2e-9f3d-3e38b332b881
+GET http://localhost:8080/api/franchises/{{get_franchise_id}}
+Accept: application/json
+
+### Get all players
+GET http://localhost:8080/api/players
+Accept: application/json
+
+### Get player
+@get_player_id =
+GET http://localhost:8080/api/players/{{get_player_id}}
+Accept: application/json
+
 ### Create franchise
 POST http://localhost:8080/api/franchises
 Content-Type: application/json
@@ -15,7 +29,7 @@ Content-Type: application/json
 }
 
 ### Add player to franchise
-@add_id = 7532d61f-298c-4ba2-9811-c9cd264221ad
+@add_id = 582626a6-2761-4258-9f81-d083ed661668
 POST http://localhost:8080/api/franchises/{{add_id}}/players
 Content-Type: application/json
 
@@ -26,7 +40,44 @@ Content-Type: application/json
   "position": "FORWARD"
 }
 
+
+### Update franchise
+@update_franchise_id = 582626a6-2761-4258-9f81-d083ed661668
+PUT http://localhost:8080/api/franchises/{{update_franchise_id}}
+Content-Type: application/json
+
+{
+  "name": "Los Angeles Lakers",
+  "city": "Los Angeles",
+  "conference": "West",
+  "titles": 18,
+  "currentPosition": 2
+}
+
+### Update player
+@update_player_id = b81c40fd-bcb4-403e-a6c6-2d8a375a8d40
+PUT http://localhost:8080/api/players/{{update_player_id}}
+Content-Type: application/json
+
+{
+  "firstName": "Lebron",
+  "lastName": "James",
+  "age": 40,
+  "position": "CENTER"
+}
+
+### Transfer player
+@transfer_franchise_id =
+@transfer_player_id = 2028b9e9-228c-4d45-b65d-31d55b40d1f0
+PUT http://localhost:8080/api/players/{{transfer_player_id}}/franchise/{{transfer_franchise_id}}
+Accept: application/json
+
 ### Delete player
-@del_id = 3b3b213e-da0d-4751-bdeb-9dde5816ec3c
-DELETE http://localhost:8080/api/players/{{del_id}}
+@delete_player_id = b81c40fd-bcb4-403e-a6c6-2d8a375a8d40
+DELETE http://localhost:8080/api/players/{{delete_player_id}}
+Accept: application/json
+
+### Delete franchise
+@delete_franchise_id = 3967ea39-8205-4dc2-966e-8814072c92ca
+DELETE http://localhost:8080/api/franchises/{{delete_franchise_id}}
 Accept: application/json
