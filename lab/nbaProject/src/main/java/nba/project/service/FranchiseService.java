@@ -36,11 +36,11 @@ public class FranchiseService {
 
     public void update(UUID id, FranchiseCreateUpdateDTO dto) {
         Franchise existingFranchise = franchiseRepository.findById(id).orElseThrow();
-        existingFranchise.setName(dto.getName());
-        existingFranchise.setCity(dto.getCity());
-        existingFranchise.setConference(dto.getConference());
+        if(dto.getName() != null) existingFranchise.setName(dto.getName());
+        if(dto.getCity() != null) existingFranchise.setCity(dto.getCity());
+        if(dto.getConference() != null) existingFranchise.setConference(dto.getConference());
         existingFranchise.setCurrentPosition(dto.getCurrentPosition());
-        existingFranchise.setTitles(dto.getTitles());
+        if(dto.getTitles() < 0) existingFranchise.setTitles(dto.getTitles());
 
         franchiseRepository.save(existingFranchise);
     }

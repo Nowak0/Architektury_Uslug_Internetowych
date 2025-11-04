@@ -34,9 +34,9 @@ public class PlayerService {
     public Player update(UUID id, PlayerCreateUpdateDTO dto) {
         Player player = findById(id).orElseThrow();
 
-        player.setFirstName(dto.getFirstName());
-        player.setLastName(dto.getLastName());
-        player.setAge(dto.getAge());
+        if (dto.getFirstName() != null) player.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) player.setLastName(dto.getLastName());
+        if (dto.getAge() < 0) player.setAge(dto.getAge());
         player.setPosition(dto.getPosition());
 
         return save(player);

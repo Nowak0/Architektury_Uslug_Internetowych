@@ -22,22 +22,16 @@ public class PlayerMapper {
         return player;
     }
 
-    public void updateEntityFromDTO(Player player, PlayerCreateUpdateDTO dto) {
-        if (dto == null || player == null) return;
-        if (dto.getFirstName() != null) player.setFirstName(dto.getFirstName());
-        if (dto.getLastName() != null) player.setLastName(dto.getLastName());
-        if (dto.getAge() > 0) player.setAge(dto.getAge());
-        if (dto.getPosition() != null) player.setPosition(dto.getPosition());
-    }
-
     public PlayerReadDTO toReadDTO(Player player) {
         if (player == null) return null;
+
         PlayerReadDTO dto = new PlayerReadDTO();
         dto.setId(player.getId());
         dto.setFirstName(player.getFirstName());
         dto.setLastName(player.getLastName());
         dto.setAge(player.getAge());
         dto.setPosition(player.getPosition());
+
         if(player.getFranchise() != null) dto.setFranchiseId(player.getFranchise().getId());
         else dto.setFranchiseId(null);
 

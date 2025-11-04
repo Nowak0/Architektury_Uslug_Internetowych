@@ -38,6 +38,7 @@ public class PlayerController {
         if(player.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(playerMapper.toReadDTO(player.get()));
     }
 
