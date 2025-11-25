@@ -1,0 +1,83 @@
+### Get all franchises
+GET http://localhost:8080/api/franchises
+Accept: application/json
+
+### Get franchise
+@get_franchise_id = a2cbbcc3-01c2-48d9-920c-2db3406e72b1
+GET http://localhost:8080/api/franchises/{{get_franchise_id}}
+Accept: application/json
+
+### Get all players
+GET http://localhost:8080/api/players
+Accept: application/json
+
+### Get player
+@get_player_id =63da5c97-5c41-42f0-84ed-b7cf20bbb130
+GET http://localhost:8080/api/players/{{get_player_id}}
+Accept: application/json
+
+### Create franchise
+POST http://localhost:8080/api/franchises
+Content-Type: application/json
+
+{
+  "name": "Los Angeles Lakers",
+  "city": "Los Angeles",
+  "conference": "West",
+  "titles": 17,
+  "currentPosition": 3
+}
+
+### Add franchise to player
+@add_id =6edabbf4-b60c-46bb-9de7-52b564457861
+POST http://localhost:8080/api/players/{{add_id}}
+Content-Type: application/json
+
+{
+  "firstName": "Lebron",
+  "lastName": "James",
+  "age": 38,
+  "position": "FORWARD"
+}
+
+
+### Update franchise
+@update_franchise_id = d1e84fc9-e33b-442c-9796-b304e735d06b
+PUT http://localhost:8080/api/franchises/{{update_franchise_id}}
+Content-Type: application/json
+
+{
+  "name": "Los Angeles Lakers",
+  "city": "Los Angeles",
+  "conference": "West",
+  "titles": 15,
+  "currentPosition": 5
+}
+
+### Update player
+@update_player_id =15f1dc3d-0b12-4233-a636-e0a4321db367
+PUT http://localhost:8080/api/players/{{update_player_id}}
+Content-Type: application/json
+
+{
+  "firstName": "Lebron",
+  "lastName": "James",
+  "age": 40,
+  "position": "CENTER"
+}
+
+### Transfer player
+@transfer_franchise_id =d9e06aaf-49a2-4a51-92ea-0c3516e1e39d
+@transfer_player_id =d1fcd1e7-d8c7-40f2-992e-e1f64a65baf6
+PUT http://localhost:8080/api/players/{{transfer_player_id}}/franchise/{{transfer_franchise_id}}
+Accept: application/json
+
+### Delete player
+@delete_player_id =b21c59fb-7b23-4f11-a79a-8860eabb1190
+DELETE http://localhost:8080/api/players/{{delete_player_id}}
+Accept: application/json
+
+### Delete franchise
+@delete_franchise_id = 66020cf7-6d24-4142-9a0a-4c9ba20d9653
+DELETE http://localhost:8080/api/franchises/{{delete_franchise_id}}
+Accept: application/json
