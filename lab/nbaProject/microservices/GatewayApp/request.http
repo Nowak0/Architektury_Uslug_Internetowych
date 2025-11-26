@@ -2,8 +2,13 @@
 GET http://localhost:8080/api/franchises
 Accept: application/json
 
+### Get all players from franchise
+@franchise_id_1 = 7a3d4a52-ae53-4066-8fa0-9e98c7ab7479
+GET http://localhost:8080/api/players/franchise/{{franchise_id_1}}/players
+Accept: application/json
+
 ### Get franchise
-@get_franchise_id = a2cbbcc3-01c2-48d9-920c-2db3406e72b1
+@get_franchise_id = 50ca0902-82ac-408d-962a-4e0a20c9661d
 GET http://localhost:8080/api/franchises/{{get_franchise_id}}
 Accept: application/json
 
@@ -12,7 +17,7 @@ GET http://localhost:8080/api/players
 Accept: application/json
 
 ### Get player
-@get_player_id =63da5c97-5c41-42f0-84ed-b7cf20bbb130
+@get_player_id =9c9f4aef-e725-498b-9830-f0378baa4062
 GET http://localhost:8080/api/players/{{get_player_id}}
 Accept: application/json
 
@@ -29,7 +34,7 @@ Content-Type: application/json
 }
 
 ### Add franchise to player
-@add_id =6edabbf4-b60c-46bb-9de7-52b564457861
+@add_id =c2b3e817-da3f-4ce1-aff7-a7b31b9292f2
 POST http://localhost:8080/api/players/{{add_id}}
 Content-Type: application/json
 
@@ -55,7 +60,7 @@ Content-Type: application/json
 }
 
 ### Update player
-@update_player_id =15f1dc3d-0b12-4233-a636-e0a4321db367
+@update_player_id =60a150a5-a52d-4020-84ea-6216e38a15fe
 PUT http://localhost:8080/api/players/{{update_player_id}}
 Content-Type: application/json
 
@@ -67,17 +72,17 @@ Content-Type: application/json
 }
 
 ### Transfer player
-@transfer_franchise_id =d9e06aaf-49a2-4a51-92ea-0c3516e1e39d
-@transfer_player_id =d1fcd1e7-d8c7-40f2-992e-e1f64a65baf6
+@transfer_franchise_id =c2b3e817-da3f-4ce1-aff7-a7b31b9292f2
+@transfer_player_id =9fde382a-f497-4705-84f4-77826a0fa98f
 PUT http://localhost:8080/api/players/{{transfer_player_id}}/franchise/{{transfer_franchise_id}}
 Accept: application/json
 
 ### Delete player
-@delete_player_id =b21c59fb-7b23-4f11-a79a-8860eabb1190
+@delete_player_id =92fdaada-50ba-4d91-8cd0-dabadb357afd
 DELETE http://localhost:8080/api/players/{{delete_player_id}}
 Accept: application/json
 
 ### Delete franchise
-@delete_franchise_id = 66020cf7-6d24-4142-9a0a-4c9ba20d9653
+@delete_franchise_id = 7a3d4a52-ae53-4066-8fa0-9e98c7ab7479
 DELETE http://localhost:8080/api/franchises/{{delete_franchise_id}}
 Accept: application/json

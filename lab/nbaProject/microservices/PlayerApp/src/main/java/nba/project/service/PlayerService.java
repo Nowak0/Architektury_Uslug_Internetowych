@@ -38,28 +38,18 @@ public class PlayerService {
 
         if (dto.getFirstName() != null) player.setFirstName(dto.getFirstName());
         if (dto.getLastName() != null) player.setLastName(dto.getLastName());
-        if (dto.getAge() < 0) player.setAge(dto.getAge());
+        if (dto.getAge() > 0) player.setAge(dto.getAge());
         player.setPosition(dto.getPosition());
 
         return save(player);
     }
 
-    public Player transfer(Player player, UUID franchiseID) {
-        Franchise franchise = new Franchise();
-        franchise.setId(franchiseID);
-        franchise.setName("Name");
-        franchiseService.save(franchise);
-
+    public Player transfer(Player player, Franchise franchise) {
         player.setFranchise(franchise);
         return save(player);
     }
 
-    public Player addToFranchise(PlayerCreateUpdateDTO dto, UUID franchiseID) {
-        Franchise franchise = new Franchise();
-        franchise.setId(franchiseID);
-        franchise.setName("Name");
-        franchiseService.save(franchise);
-
+    public Player addToFranchise(PlayerCreateUpdateDTO dto, Franchise franchise) {
         Player player = new Player();
         player.setId(UUID.randomUUID());
         player.setFirstName(dto.getFirstName());

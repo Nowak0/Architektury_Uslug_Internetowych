@@ -48,7 +48,7 @@ public class FranchiseService {
         if(dto.getCity() != null) existingFranchise.setCity(dto.getCity());
         if(dto.getConference() != null) existingFranchise.setConference(dto.getConference());
         existingFranchise.setCurrentPosition(dto.getCurrentPosition());
-        if(dto.getTitles() < 0) existingFranchise.setTitles(dto.getTitles());
+        if(dto.getTitles() > 0) existingFranchise.setTitles(dto.getTitles());
 
         franchiseRepository.save(existingFranchise);
     }

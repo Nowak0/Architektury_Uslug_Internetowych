@@ -26,6 +26,7 @@ public class PlayerController {
     private final PlayerService playerService;
     private final PlayerMapper playerMapper;
     private final FranchiseService franchiseService;
+    private final FranchiseMapper franchiseMapper;
 
     @GetMapping("/players")
     public List<PlayerListDTO> getAllPlayers() {
@@ -44,7 +45,7 @@ public class PlayerController {
         return ResponseEntity.ok(playerMapper.toReadDTO(player.get()));
     }
 
-    @GetMapping("/franchises/{id}/players")
+    @GetMapping("/players/franchise/{id}/players")
     public ResponseEntity<List<PlayerListDTO>> getAllPlayersFromFranchise(@PathVariable UUID id) {
         if(franchiseService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -62,7 +63,10 @@ public class PlayerController {
 
     @PostMapping("/players/{franchiseID}")
     public ResponseEntity<PlayerReadDTO> addPlayer(@PathVariable UUID franchiseID, @RequestBody PlayerCreateUpdateDTO dto) {
-        Player player = playerService.addToFranchise(dto, franchiseID);
+        Optional<Franchise> franchise = franchiseService.findById(franchiseID);
+        if(franchise.isEmpty()) {return ResponseEntity.notFound().build();}
+
+        Player player = playerService.addToFranchise(dto, franchise.get());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(playerMapper.toReadDTO(player));
     }
@@ -80,7 +84,10 @@ public class PlayerController {
         Optional<Player> player = playerService.findById(playerID);
         if(player.isEmpty()) {return ResponseEntity.notFound().build();}
 
-        Player transferred = playerService.transfer(player.get(), franchiseID);
+        Optional<Franchise> franchise = franchiseService.findById(franchiseID);
+        if(franchise.isEmpty()) {return ResponseEntity.notFound().build();}
+
+        Player transferred = playerService.transfer(player.get(), franchise.get());
         return ResponseEntity.ok(playerMapper.toReadDTO(transferred));
     }
 

@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import nba.project.ProjectApplication;
+import nba.project.client.FranchiseClient;
 import nba.project.entity.Franchise;
 import nba.project.entity.Player;
 import nba.project.entity.Position;
@@ -14,18 +15,28 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 
 @Component
 public class DataInitializer {
     private final PlayerRepository playerRepository;
+	private final FranchiseClient franchiseClient;
+	private final FranchiseRepository franchiseRepository;
 
-    public  DataInitializer(PlayerRepository playerRepository) {
+	public DataInitializer(PlayerRepository playerRepository, FranchiseClient franchiseClient, FranchiseRepository franchiseRepository) {
         this.playerRepository = playerRepository;
+		this.franchiseClient = franchiseClient;
+        this.franchiseRepository = franchiseRepository;
     }
 
     @PostConstruct
     public void initData() {
         System.out.println("Initializing Data...");
+
+		List<Franchise> franchises = franchiseClient.syncFranchises();
+		franchiseRepository.saveAll(franchises);
+		List<Player> players = new ArrayList<>();
+		Random random = new Random();
 
         Player butler = Player.builder()
 				.id(UUID.randomUUID())
@@ -51,10 +62,14 @@ public class DataInitializer {
 				.position(Position.GUARD)
 				.build();
 
-        List<Player> players = new ArrayList<>();
         players.add(butler);
         players.add(embiid);
         players.add(maxey);
+
+		for (Player player : players) {
+			player.setFranchise(franchises.get(random.nextInt(franchises.size())));
+		}
+
         playerRepository.saveAll(players);
 
         System.out.println("Data initialized");

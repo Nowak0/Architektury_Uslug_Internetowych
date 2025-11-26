@@ -2,10 +2,7 @@ package nba.project.controller;
 
 import lombok.RequiredArgsConstructor;
 import nba.project.dto.franchise.FranchiseListDTO;
-import nba.project.dto.player.PlayerCreateUpdateDTO;
-import nba.project.dto.player.PlayerReadDTO;
 import nba.project.entity.Franchise;
-import nba.project.entity.Player;
 import nba.project.mapper.FranchiseMapper;
 import nba.project.mapper.PlayerMapper;
 import nba.project.service.FranchiseService;
@@ -15,12 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/franchises")
 @RequiredArgsConstructor
-public class FranchiseSyncController {
+public class FranchiseController {
     private final FranchiseService franchiseService;
     private final FranchiseMapper franchiseMapper;
     private final PlayerMapper playerMapper;
@@ -33,7 +31,9 @@ public class FranchiseSyncController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFranchise(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteFranchise(@PathVariable UUID id) {
+        Optional<Franchise> f = franchiseService.findById(id);
+//
         franchiseService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -45,3 +45,11 @@ public class FranchiseSyncController {
                 .toList();
     }
 }
+//if (f.isEmpty()) {return ResponseEntity.notFound().build();}
+//        List<Player> players = new ArrayList<>();
+//        players = playerService.findAll();
+//        for (Player player : players) {
+//            if (player.getFranchise().getId() == id) {
+//                playerService.deleteById(player.getId());
+//            }
+//        }

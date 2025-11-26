@@ -20,4 +20,6 @@ public class Franchise {
     private UUID id;
     @Column(unique = true, nullable = false)
     private String name;
+    @OneToMany(mappedBy = "franchise",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Player> players;
 }
