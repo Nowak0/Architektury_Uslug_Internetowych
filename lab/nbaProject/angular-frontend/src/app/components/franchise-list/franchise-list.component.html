@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>NBA Franchises</h1>
+  
+  <div class="actions">
+    <a routerLink="/franchises/add" class="btn btn-primary">Add Franchise</a>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && franchises.length === 0" class="empty">
+    No franchises found.
+  </div>
+
+  <table *ngIf="!loading && franchises.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let franchise of franchises">
+        <td>
+          <a [routerLink]="['/franchises', franchise.id]">{{ franchise.name }}</a>
+        </td>
+        <td class="actions-cell">
+          <a [routerLink]="['/franchises/edit', franchise.id]" class="btn btn-secondary">Edit</a>
+          <button (click)="deleteFranchise(franchise.id, franchise.name)" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

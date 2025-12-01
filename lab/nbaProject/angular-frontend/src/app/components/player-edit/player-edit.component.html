@@ -1,0 +1,48 @@
+<div class="container">
+  <h1>Edit Player</h1>
+  <p *ngIf="franchiseName" class="subtitle">in {{ franchiseName }}</p>
+  
+  <a [routerLink]="['/franchises', franchiseId]" class="back-link">&larr; Back to Franchise</a>
+
+  <div *ngIf="loadingData" class="loading">Loading...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form *ngIf="!loadingData" [formGroup]="playerForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="firstName">First Name *</label>
+      <input type="text" id="firstName" formControlName="firstName" class="form-control">
+      <div *ngIf="playerForm.get('firstName')?.invalid && playerForm.get('firstName')?.touched" class="validation-error">
+        First name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name *</label>
+      <input type="text" id="lastName" formControlName="lastName" class="form-control">
+      <div *ngIf="playerForm.get('lastName')?.invalid && playerForm.get('lastName')?.touched" class="validation-error">
+        Last name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input type="number" id="age" formControlName="age" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position</label>
+      <select id="position" formControlName="position" class="form-control">
+        <option value="">Select position</option>
+        <option *ngFor="let pos of positions" [value]="pos">{{ pos }}</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="playerForm.invalid || loading">
+        {{ loading ? 'Saving...' : 'Save' }}
+      </button>
+      <a [routerLink]="['/franchises', franchiseId]" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>

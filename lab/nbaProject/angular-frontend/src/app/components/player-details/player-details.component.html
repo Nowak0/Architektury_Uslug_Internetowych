@@ -1,0 +1,41 @@
+<div class="container">
+  <a [routerLink]="['/franchises', franchiseId]" class="back-link">&larr; Back to {{ franchiseName || 'Franchise' }}</a>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && player" class="player-details">
+    <h1>{{ player.firstName }} {{ player.lastName }}</h1>
+    
+    <div class="details-card">
+      <div class="detail-row">
+        <span class="label">First Name:</span>
+        <span class="value">{{ player.firstName }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Last Name:</span>
+        <span class="value">{{ player.lastName }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Age:</span>
+        <span class="value">{{ player.age || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Position:</span>
+        <span class="value">{{ player.position || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Franchise:</span>
+        <span class="value">
+          <a [routerLink]="['/franchises', franchiseId]">{{ franchiseName }}</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a [routerLink]="['/franchises', franchiseId, 'players', 'edit', playerId]" class="btn btn-primary">Edit Player</a>
+      <a [routerLink]="['/franchises', franchiseId]" class="btn btn-secondary">Back to Franchise</a>
+    </div>
+  </div>
+</div>

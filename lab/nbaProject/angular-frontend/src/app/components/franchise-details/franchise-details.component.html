@@ -1,0 +1,64 @@
+<div class="container">
+  <a routerLink="/franchises" class="back-link">&larr; Back to Franchises</a>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && franchise" class="franchise-details">
+    <h1>{{ franchise.name }}</h1>
+    
+    <div class="details-card">
+      <div class="detail-row">
+        <span class="label">City:</span>
+        <span class="value">{{ franchise.city || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Conference:</span>
+        <span class="value">{{ franchise.conference || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Current Position:</span>
+        <span class="value">{{ franchise.currentPosition || 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Titles:</span>
+        <span class="value">{{ franchise.titles || 0 }}</span>
+      </div>
+    </div>
+
+    <div class="players-section">
+      <h2>Players</h2>
+      
+      <div class="actions">
+        <a [routerLink]="['/franchises', franchiseId, 'players', 'add']" class="btn btn-primary">Add Player</a>
+      </div>
+
+      <div *ngIf="loadingPlayers" class="loading">Loading players...</div>
+
+      <div *ngIf="!loadingPlayers && players.length === 0" class="empty">
+        No players in this franchise.
+      </div>
+
+      <table *ngIf="!loadingPlayers && players.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let player of players">
+            <td>
+              <a [routerLink]="['/franchises', franchiseId, 'players', player.id]">{{ player.fullName }}</a>
+            </td>
+            <td class="actions-cell">
+              <a [routerLink]="['/franchises', franchiseId, 'players', 'edit', player.id]" class="btn btn-secondary">Edit</a>
+              <button (click)="deletePlayer(player.id, player.fullName)" class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

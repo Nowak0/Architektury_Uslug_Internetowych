@@ -1,0 +1,46 @@
+<div class="container">
+  <h1>Edit Franchise</h1>
+  
+  <a routerLink="/franchises" class="back-link">&larr; Back to Franchises</a>
+
+  <div *ngIf="loadingData" class="loading">Loading...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form *ngIf="!loadingData" [formGroup]="franchiseForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input type="text" id="name" formControlName="name" class="form-control">
+      <div *ngIf="franchiseForm.get('name')?.invalid && franchiseForm.get('name')?.touched" class="validation-error">
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" id="city" formControlName="city" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="conference">Conference</label>
+      <input type="text" id="conference" formControlName="conference" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="currentPosition">Current Position</label>
+      <input type="number" id="currentPosition" formControlName="currentPosition" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="titles">Titles</label>
+      <input type="number" id="titles" formControlName="titles" class="form-control">
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="franchiseForm.invalid || loading">
+        {{ loading ? 'Saving...' : 'Save' }}
+      </button>
+      <a routerLink="/franchises" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
