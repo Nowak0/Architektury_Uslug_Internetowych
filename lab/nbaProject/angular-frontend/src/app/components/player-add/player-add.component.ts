@@ -30,8 +30,8 @@ export class PlayerAddComponent implements OnInit {
     this.playerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      age: [null],
-      position: ['']
+      age: [null, [Validators.required, Validators.min(18), Validators.max(50)]],
+      position: ['', Validators.required]
     });
   }
 
@@ -61,7 +61,7 @@ export class PlayerAddComponent implements OnInit {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         age: formValue.age,
-        position: formValue.position || undefined
+        position: formValue.position
       };
       this.playerService.createPlayer(this.franchiseId, playerData).subscribe({
         next: () => {
