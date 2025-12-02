@@ -11,6 +11,7 @@ export interface PlayerReadDTO {
   lastName: string;
   age: number;
   position: Position;
+  number: number;
   franchiseId: string;
 }
 
@@ -19,4 +20,5 @@ export interface PlayerCreateUpdateDTO {
   lastName: string;
   age?: number;
   position?: Position;
+  number?: number;
 }

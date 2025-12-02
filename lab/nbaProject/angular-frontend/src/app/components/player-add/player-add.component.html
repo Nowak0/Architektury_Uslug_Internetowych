@@ -44,6 +44,16 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="number">Jersey Number *</label>
+      <input type="number" id="number" formControlName="number" class="form-control" min="0" max="99">
+      <div *ngIf="playerForm.get('number')?.invalid && playerForm.get('number')?.touched" class="validation-error">
+        <span *ngIf="playerForm.get('number')?.errors?.['required']">Jersey number is required</span>
+        <span *ngIf="playerForm.get('number')?.errors?.['min']">Jersey number must be at least 0</span>
+        <span *ngIf="playerForm.get('number')?.errors?.['max']">Jersey number must be at most 99</span>
+      </div>
+    </div>
+
     <div class="form-actions">
       <button type="submit" class="btn btn-primary" [disabled]="playerForm.invalid || loading">
         {{ loading ? 'Saving...' : 'Save' }}

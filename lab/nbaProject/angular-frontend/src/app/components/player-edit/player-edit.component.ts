@@ -33,7 +33,8 @@ export class PlayerEditComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       age: [null, [Validators.required, Validators.min(18), Validators.max(50)]],
-      position: ['', Validators.required]
+      position: ['', Validators.required],
+      number: [null, [Validators.required, Validators.min(0), Validators.max(99)]]
     });
   }
 
@@ -62,7 +63,8 @@ export class PlayerEditComponent implements OnInit {
           firstName: player.firstName,
           lastName: player.lastName,
           age: player.age,
-          position: player.position
+          position: player.position,
+          number: player.number
         });
         this.loadingData = false;
       },
@@ -83,7 +85,8 @@ export class PlayerEditComponent implements OnInit {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         age: formValue.age,
-        position: formValue.position
+        position: formValue.position,
+        number: formValue.number
       };
       this.playerService.updatePlayer(this.playerId, playerData).subscribe({
         next: () => {

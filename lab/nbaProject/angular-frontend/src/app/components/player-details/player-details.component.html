@@ -26,6 +26,10 @@
         <span class="value">{{ player.position || 'N/A' }}</span>
       </div>
       <div class="detail-row">
+        <span class="label">Jersey Number:</span>
+        <span class="value">{{ player.number !== undefined && player.number !== null ? player.number : 'N/A' }}</span>
+      </div>
+      <div class="detail-row">
         <span class="label">Franchise:</span>
         <span class="value">
           <a [routerLink]="['/franchises', franchiseId]">{{ franchiseName }}</a>
