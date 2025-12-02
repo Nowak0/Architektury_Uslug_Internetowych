@@ -8,6 +8,8 @@
   <div *ngIf="!loading && player" class="player-details">
     <h1>{{ player.firstName }} {{ player.lastName }}</h1>
     
+    <div class="player-id">Player ID: {{ player.id }}</div>
+    
     <div class="details-card">
       <div class="detail-row">
         <span class="label">First Name:</span>
@@ -30,6 +32,31 @@
         <span class="value">
           <a [routerLink]="['/franchises', franchiseId]">{{ franchiseName }}</a>
         </span>
+      </div>
+    </div>
+
+    <!-- Transfer Section -->
+    <div class="transfer-section">
+      <h3>Transfer Player</h3>
+      
+      <div *ngIf="transferSuccess" class="success-message">{{ transferSuccess }}</div>
+      <div *ngIf="transferError" class="error-message">{{ transferError }}</div>
+      
+      <div class="transfer-form">
+        <label for="franchise-select">Select new franchise:</label>
+        <select id="franchise-select" [(ngModel)]="selectedFranchiseId" class="form-control">
+          <option value="">-- Select franchise --</option>
+          <option *ngFor="let franchise of franchises" [value]="franchise.id">
+            {{ franchise.name }}
+          </option>
+        </select>
+        <button 
+          type="button" 
+          class="btn btn-transfer" 
+          (click)="transferPlayer()" 
+          [disabled]="!selectedFranchiseId || transferLoading">
+          {{ transferLoading ? 'Transferring...' : 'Transfer' }}
+        </button>
       </div>
     </div>
 
