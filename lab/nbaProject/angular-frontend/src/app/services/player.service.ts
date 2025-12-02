@@ -36,6 +36,6 @@ export class PlayerService {
   }
 
   transferPlayer(playerId: string, newFranchiseId: string): Observable<PlayerReadDTO> {
-    return this.http.patch<PlayerReadDTO>(`${this.apiUrl}/${playerId}/transfer/${newFranchiseId}`, {});
+    return this.http.put<PlayerReadDTO>(`${this.apiUrl}/${playerId}/franchise/${newFranchiseId}`, {});
   }
 }
