@@ -112,7 +112,11 @@ export class PlayerDetailsComponent implements OnInit {
       },
       error: (err) => {
         this.transferLoading = false;
-        this.transferError = 'Transfer failed. Please try again.';
+        if (err.status === 404) {
+          this.transferError = 'Nie znaleziono gracza lub franchise';
+        } else {
+          this.transferError = 'Nie udało się przenieść gracza. Spróbuj ponownie.';
+        }
         console.error(err);
       }
     });
