@@ -34,4 +34,8 @@ export class PlayerService {
   deletePlayer(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  transferPlayer(playerId: string, newFranchiseId: string): Observable<PlayerReadDTO> {
+    return this.http.patch<PlayerReadDTO>(`${this.apiUrl}/${playerId}/transfer/${newFranchiseId}`, {});
+  }
 }

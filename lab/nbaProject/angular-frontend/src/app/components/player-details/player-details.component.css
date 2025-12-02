@@ -17,7 +17,18 @@
 
 h1 {
   color: #333;
+  margin-bottom: 10px;
+}
+
+.player-id {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-block;
   margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .loading {
@@ -70,6 +81,60 @@ h1 {
   text-decoration: underline;
 }
 
+/* Transfer Section */
+.transfer-section {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.transfer-section h3 {
+  color: #856404;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transfer-form label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
 .actions {
   margin-top: 20px;
 }
@@ -101,4 +166,20 @@ h1 {
 
 .btn-secondary:hover {
   background-color: #545b62;
+}
+
+.btn-transfer {
+  background-color: #ffc107;
+  color: #212529;
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+.btn-transfer:hover:not(:disabled) {
+  background-color: #e0a800;
+}
+
+.btn-transfer:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
