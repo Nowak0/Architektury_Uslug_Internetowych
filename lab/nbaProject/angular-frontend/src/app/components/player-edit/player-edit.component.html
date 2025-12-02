@@ -42,7 +42,7 @@
         <option *ngFor="let pos of positions" [value]="pos">{{ pos }}</option>
       </select>
       <div *ngIf="playerForm.get('position')?.invalid && playerForm.get('position')?.touched" class="validation-error">
-        Position is required
+        <span *ngIf="playerForm.get('position')?.errors?.['required']">Position is required</span>
       </div>
     </div>
 

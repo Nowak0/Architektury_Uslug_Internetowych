@@ -83,7 +83,7 @@ export class PlayerEditComponent implements OnInit {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         age: formValue.age,
-        position: formValue.position || undefined
+        position: formValue.position
       };
       this.playerService.updatePlayer(this.playerId, playerData).subscribe({
         next: () => {

@@ -61,7 +61,7 @@ export class PlayerAddComponent implements OnInit {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         age: formValue.age,
-        position: formValue.position || undefined
+        position: formValue.position
       };
       this.playerService.createPlayer(this.franchiseId, playerData).subscribe({
         next: () => {
