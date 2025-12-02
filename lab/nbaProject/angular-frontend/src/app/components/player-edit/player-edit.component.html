@@ -26,16 +26,24 @@
     </div>
 
     <div class="form-group">
-      <label for="age">Age</label>
-      <input type="number" id="age" formControlName="age" class="form-control">
+      <label for="age">Age *</label>
+      <input type="number" id="age" formControlName="age" class="form-control" min="18" max="50">
+      <div *ngIf="playerForm.get('age')?.invalid && playerForm.get('age')?.touched" class="validation-error">
+        <span *ngIf="playerForm.get('age')?.errors?.['required']">Age is required</span>
+        <span *ngIf="playerForm.get('age')?.errors?.['min']">Age must be at least 18</span>
+        <span *ngIf="playerForm.get('age')?.errors?.['max']">Age must be at most 50</span>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="position">Position</label>
+      <label for="position">Position *</label>
       <select id="position" formControlName="position" class="form-control">
         <option value="">Select position</option>
         <option *ngFor="let pos of positions" [value]="pos">{{ pos }}</option>
       </select>
+      <div *ngIf="playerForm.get('position')?.invalid && playerForm.get('position')?.touched" class="validation-error">
+        Position is required
+      </div>
     </div>
 
     <div class="form-actions">
