@@ -27,6 +27,17 @@ h2 {
   padding-bottom: 10px;
 }
 
+.franchise-id {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .loading {
   text-align: center;
   padding: 20px;

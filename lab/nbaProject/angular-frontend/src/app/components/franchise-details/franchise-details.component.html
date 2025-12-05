@@ -8,11 +8,9 @@
   <div *ngIf="!loading && franchise" class="franchise-details">
     <h1>{{ franchise.name }}</h1>
     
+    <div class="franchise-id">Franchise ID: {{ franchise.id }}</div>
+
     <div class="details-card">
-      <div class="detail-row">
-        <span class="label">ID:</span>
-        <span class="value">{{ franchise.id }}</span>
-      </div>
       <div class="detail-row">
         <span class="label">City:</span>
         <span class="value">{{ franchise.city || 'N/A' }}</span>

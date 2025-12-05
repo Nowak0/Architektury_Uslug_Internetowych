@@ -8,12 +8,12 @@ import { PlayerEditComponent } from './components/player-edit/player-edit.compon
 import { PlayerDetailsComponent } from './components/player-details/player-details.component';
 
 export const routes: Routes = [
-    {path: '', redirectTo: '/franchises', pathMatch: 'full'},
-    {path: 'franchises', component: FranchiseListComponent},
-    {path: 'franchises/add', component: FranchiseAddComponent},
-    {path: 'franchises/edit/:id', component: FranchiseEditComponent},
-    {path: 'franchises/details/:id', component: FranchiseDetailsComponent},
-    {path: 'franchises/:franchiseId/players/add', component: PlayerAddComponent},
-    {path: 'franchises/:franchiseId/players/edit/:id', component: PlayerEditComponent},
-    {path: 'franchises/:franchiseId/players/:playerId', component: PlayerDetailsComponent}
+  { path: '', redirectTo: '/franchises', pathMatch: 'full' },
+  { path: 'franchises', component: FranchiseListComponent },
+  { path: 'franchises/add', component: FranchiseAddComponent },
+  { path: 'franchises/edit/:id', component: FranchiseEditComponent },
+  { path: 'franchises/:id', component: FranchiseDetailsComponent },
+  { path: 'franchises/:franchiseId/players/add', component: PlayerAddComponent },
+  { path: 'franchises/:franchiseId/players/edit/:playerId', component: PlayerEditComponent },
+  { path: 'franchises/:franchiseId/players/:playerId', component: PlayerDetailsComponent }
 ];
