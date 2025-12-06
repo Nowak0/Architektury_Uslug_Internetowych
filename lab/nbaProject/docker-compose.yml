@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database for FranchiseApp
+  franchise-db:
+    image: postgres:16-alpine
+    container_name: franchise-db
+    environment:
+      POSTGRES_DB: franchisedb
+      POSTGRES_USER: franchiseuser
+      POSTGRES_PASSWORD: franchisepass
+    volumes:
+      - franchise-data:/var/lib/postgresql/data
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U franchiseuser -d franchisedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL database for PlayerApp
+  player-db:
+    image: postgres:16-alpine
+    container_name: player-db
+    environment:
+      POSTGRES_DB: playerdb
+      POSTGRES_USER: playeruser
+      POSTGRES_PASSWORD: playerpass
+    volumes:
+      - player-data:/var/lib/postgresql/data
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U playeruser -d playerdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FranchiseApp (Categories) microservice
+  franchise-app:
+    build:
+      context: ./microservices/FranchiseApp
+      dockerfile: Dockerfile
+    container_name: franchise-app
+    environment:
+      SERVER_PORT: 8083
+      DATABASE_URL: jdbc:postgresql://franchise-db:5432/franchisedb
+      DATABASE_USERNAME: franchiseuser
+      DATABASE_PASSWORD: franchisepass
+      DATABASE_DRIVER: org.postgresql.Driver
+      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8083:8083"
+    depends_on:
+      franchise-db:
+        condition: service_healthy
+    networks:
+      - nba-network
+    restart: unless-stopped
+
+  # PlayerApp (Elements) microservice
+  player-app:
+    build:
+      context: ./microservices/PlayerApp
+      dockerfile: Dockerfile
+    container_name: player-app
+    environment:
+      SERVER_PORT: 8082
+      DATABASE_URL: jdbc:postgresql://player-db:5432/playerdb
+      DATABASE_USERNAME: playeruser
+      DATABASE_PASSWORD: playerpass
+      DATABASE_DRIVER: org.postgresql.Driver
+      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8082:8082"
+    depends_on:
+      player-db:
+        condition: service_healthy
+    networks:
+      - nba-network
+    restart: unless-stopped
+
+  # GatewayApp microservice
+  gateway-app:
+    build:
+      context: ./microservices/GatewayApp
+      dockerfile: Dockerfile
+    container_name: gateway-app
+    environment:
+      SERVER_PORT: 8080
+      FRANCHISE_APP_URL: http://franchise-app:8083
+      PLAYER_APP_URL: http://player-app:8082
+    ports:
+      - "8080:8080"
+    depends_on:
+      - franchise-app
+      - player-app
+    networks:
+      - nba-network
+    restart: unless-stopped
+
+  # Angular frontend
+  angular-frontend:
+    build:
+      context: ./angular-frontend
+      dockerfile: Dockerfile
+    container_name: angular-frontend
+    environment:
+      GATEWAY_URL: http://gateway-app:8080
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway-app
+    networks:
+      - nba-network
+    restart: unless-stopped
+
+networks:
+  nba-network:
+    driver: bridge
+
+volumes:
+  franchise-data:
+    driver: local
+  player-data:
+    driver: local
