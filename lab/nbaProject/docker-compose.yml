@@ -72,11 +72,14 @@ services:
       DATABASE_PASSWORD: playerpass
       DATABASE_DRIVER: org.postgresql.Driver
       JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      FRANCHISE_APP_URL: http://franchise-app:8083
     ports:
       - "8082:8082"
     depends_on:
       player-db:
         condition: service_healthy
+      franchise-app:
+        condition: service_started
     networks:
       - nba-network
     restart: unless-stopped
