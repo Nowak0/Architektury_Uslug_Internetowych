@@ -8,17 +8,24 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GatewayConfig {
+    
+    @Value("${franchise.app.url}")
+    private String franchiseAppUrl;
+    
+    @Value("${player.app.url}")
+    private String playerAppUrl;
+    
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder
                 .routes()
                 .route("franchise", r -> r
                         .path("/api/franchises/**")
-                        .uri("http://localhost:8083")
+                        .uri(franchiseAppUrl)
                 )
                 .route("player", r -> r
                         .path("/api/players/**")
-                        .uri("http://localhost:8082")
+                        .uri(playerAppUrl)
                 )
                 .build();
     }

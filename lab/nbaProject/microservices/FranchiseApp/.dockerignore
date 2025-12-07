@@ -1,0 +1,21 @@
+# Ignore build artifacts
+target/
+*.jar
+*.war
+*.ear
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Ignore logs
+*.log
+
+# Ignore test files
+*.test
+
+# Ignore git
+.git/
+.gitignore

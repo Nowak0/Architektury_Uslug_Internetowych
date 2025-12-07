@@ -1,0 +1,25 @@
+# Build artifacts
+target/
+*.jar
+*.war
+*.ear
+
+# Dependencies
+node_modules/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Miscellaneous
+*.zip
+franchises.txt

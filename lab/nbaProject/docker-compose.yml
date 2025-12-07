@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  # PostgreSQL for FranchiseApp
+  franchise-db:
+    image: postgres:16-alpine
+    container_name: franchise-db
+    environment:
+      POSTGRES_DB: franchisedb
+      POSTGRES_USER: franchise_user
+      POSTGRES_PASSWORD: franchise_pass
+    volumes:
+      - franchise-data:/var/lib/postgresql/data
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U franchise_user -d franchisedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL for PlayerApp
+  player-db:
+    image: postgres:16-alpine
+    container_name: player-db
+    environment:
+      POSTGRES_DB: playerdb
+      POSTGRES_USER: player_user
+      POSTGRES_PASSWORD: player_pass
+    volumes:
+      - player-data:/var/lib/postgresql/data
+    networks:
+      - nba-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U player_user -d playerdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FranchiseApp microservice
+  franchise-app:
+    build:
+      context: ./microservices/FranchiseApp
+      dockerfile: Dockerfile
+    container_name: franchise-app
+    environment:
+      SERVER_PORT: 8083
+      SPRING_DATASOURCE_URL: jdbc:postgresql://franchise-db:5432/franchisedb
+      SPRING_DATASOURCE_USERNAME: franchise_user
+      SPRING_DATASOURCE_PASSWORD: franchise_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8083:8083"
+    networks:
+      - nba-network
+    depends_on:
+      franchise-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # PlayerApp microservice
+  player-app:
+    build:
+      context: ./microservices/PlayerApp
+      dockerfile: Dockerfile
+    container_name: player-app
+    environment:
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:postgresql://player-db:5432/playerdb
+      SPRING_DATASOURCE_USERNAME: player_user
+      SPRING_DATASOURCE_PASSWORD: player_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8082:8082"
+    networks:
+      - nba-network
+    depends_on:
+      player-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # GatewayApp
+  gateway:
+    build:
+      context: ./microservices/GatewayApp
+      dockerfile: Dockerfile
+    container_name: gateway
+    environment:
+      SERVER_PORT: 8080
+      FRANCHISE_APP_URL: http://franchise-app:8083
+      PLAYER_APP_URL: http://player-app:8082
+    ports:
+      - "8080:8080"
+    networks:
+      - nba-network
+    depends_on:
+      franchise-app:
+        condition: service_healthy
+      player-app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./angular-frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    environment:
+      GATEWAY_URL: http://gateway:8080
+    ports:
+      - "4200:80"
+    networks:
+      - nba-network
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  nba-network:
+    driver: bridge
+
+volumes:
+  franchise-data:
+  player-data:
