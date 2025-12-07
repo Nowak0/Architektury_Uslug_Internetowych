@@ -18,12 +18,19 @@ RUN npm run build
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-# Install gettext for envsubst
-RUN apk add --no-cache gettext
+# Install gettext for envsubst and bash for scripting
+RUN apk add --no-cache gettext bash
 
 # Copy built application from build stage
-# Angular 17+ with application builder outputs to dist/angular-frontend/browser
-COPY --from=build /app/dist/angular-frontend/browser /usr/share/nginx/html
+COPY --from=build /app/dist/angular-frontend /tmp/angular-dist
+
+# Intelligently copy files (handles both browser subdir and direct output)
+RUN if [ -d "/tmp/angular-dist/browser" ]; then \
+      cp -r /tmp/angular-dist/browser/* /usr/share/nginx/html/; \
+    else \
+      cp -r /tmp/angular-dist/* /usr/share/nginx/html/; \
+    fi && \
+    rm -rf /tmp/angular-dist
 
 # Copy nginx template
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
