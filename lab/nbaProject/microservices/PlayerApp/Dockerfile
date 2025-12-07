@@ -5,13 +5,14 @@ WORKDIR /app
 
 # Copy Maven wrapper and pom.xml
 COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY mvnw ./
+COPY microservices/PlayerApp/pom.xml ./
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
-COPY src ./src
+COPY microservices/PlayerApp/src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests

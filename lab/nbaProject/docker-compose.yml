@@ -40,8 +40,8 @@ services:
   # FranchiseApp microservice
   franchise-app:
     build:
-      context: ./microservices/FranchiseApp
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: microservices/FranchiseApp/Dockerfile
     container_name: franchise-app
     environment:
       SERVER_PORT: 8083
@@ -67,8 +67,8 @@ services:
   # PlayerApp microservice
   player-app:
     build:
-      context: ./microservices/PlayerApp
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: microservices/PlayerApp/Dockerfile
     container_name: player-app
     environment:
       SERVER_PORT: 8082
@@ -94,8 +94,8 @@ services:
   # GatewayApp
   gateway:
     build:
-      context: ./microservices/GatewayApp
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: microservices/GatewayApp/Dockerfile
     container_name: gateway
     environment:
       SERVER_PORT: 8080

@@ -5,13 +5,14 @@ WORKDIR /app
 
 # Copy Maven wrapper and pom.xml
 COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY mvnw ./
+COPY microservices/FranchiseApp/pom.xml ./
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
-COPY src ./src
+COPY microservices/FranchiseApp/src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
