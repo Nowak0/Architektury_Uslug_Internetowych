@@ -22,6 +22,7 @@ FROM nginx:alpine
 RUN apk add --no-cache gettext
 
 # Copy built application from build stage
+# Angular 17+ with application builder outputs to dist/angular-frontend/browser
 COPY --from=build /app/dist/angular-frontend/browser /usr/share/nginx/html
 
 # Copy nginx template
