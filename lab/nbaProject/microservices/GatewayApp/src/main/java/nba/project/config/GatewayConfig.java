@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayConfig {
     
-    @Value("${franchise.app.url}")
+    @Value("${franchise.app.url:http://localhost:8083}")
     private String franchiseAppUrl;
     
-    @Value("${player.app.url}")
+    @Value("${player.app.url:http://localhost:8082}")
     private String playerAppUrl;
     
     @Bean

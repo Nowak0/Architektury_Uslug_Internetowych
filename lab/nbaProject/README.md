@@ -1,3 +1,70 @@
+# NBA Microservices Application
+
+## Architektura
+
+- **FranchiseApp** (port 8083) - zarządza drużynami NBA
+- **PlayerApp** (port 8082) - zarządza zawodnikami
+- **GatewayApp** (port 8080) - API Gateway
+- **Angular Frontend** (port 80) - interfejs użytkownika
+- **PostgreSQL** - dwie oddzielne bazy danych dla FranchiseApp i PlayerApp
+
+## Uruchamianie aplikacji
+
+### Pierwsze uruchomienie:
+```bash
+cd lab/nbaProject
+docker-compose up --build
+```
+
+### Po zmianach w kodzie:
+```bash
+./rebuild.sh
+```
+
+Lub ręcznie:
+```bash
+docker-compose down
+docker-compose build --no-cache
+docker-compose up
+```
+
+### Sprawdzanie logów:
+```bash
+docker-compose logs -f
+docker-compose logs -f gateway-app
+docker-compose logs -f franchise-app
+```
+
+### Czyszczenie (łącznie z danymi):
+```bash
+docker-compose down -v
+```
+
+## Dostęp do aplikacji
+
+- **Frontend**: http://localhost
+- **Gateway API**: http://localhost:8080
+- **Franchise API**: http://localhost:8083
+- **Player API**: http://localhost:8082
+
+## Rozwiązane problemy
+
+### Problem 1: Błędy CORS
+✅ Dodano konfigurację CORS w GatewayApp
+✅ Naprawiono routing w GatewayConfig (użycie zmiennych środowiskowych)
+
+### Problem 2: Utrata danych po restarcie
+✅ Zmieniono `DDL_AUTO: create` na `DDL_AUTO: update`
+✅ Teraz Hibernate aktualizuje schemat zamiast go resetować
+
+## Dane testowe
+
+Aplikacja automatycznie inicjalizuje przykładowe dane:
+- 2 drużyny: Golden State Warriors, Philadelphia 76ers
+- 3 zawodników: Jimmy Butler, VJ Edgecombe, Tyrese Maxey
+
+---
+
 # NBA Project - Docker Deployment Guide
 
 This project provides a complete Docker containerization setup for the NBA microservices application.
@@ -251,6 +318,24 @@ docker-compose up --build
 │ franchise-db │      │ player-db    │
 └──────────────┘      └──────────────┘
 ```
+
+## Weryfikacja poprawności
+
+Po zastosowaniu zmian:
+1. Uruchom `docker-compose up --build`
+2. Dodaj nową drużynę przez frontend
+3. **NIE powinien** pojawić się czerwony błąd
+4. Restart: `docker-compose restart`
+5. Dodana drużyna **powinna być nadal widoczna**
+
+## Dodatkowe informacje
+
+- Volumeny PostgreSQL (`franchise-data` i `player-data`) zachowują dane między restartami
+- `DDL_AUTO: update` sprawia że Hibernate:
+  - Tworzy brakujące tabele przy pierwszym uruchomieniu
+  - Aktualizuje istniejące tabele gdy zmieni się model
+  - **NIE usuwa** istniejących danych
+- CORS jest teraz poprawnie skonfigurowany dla Angular frontend (localhost:80)
 
 ## License
 
