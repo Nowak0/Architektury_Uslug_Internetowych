@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # PostgreSQL database for FranchiseApp
   franchise-db:
     image: postgres:16-alpine
     container_name: franchise-db
@@ -19,7 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # PostgreSQL database for PlayerApp
   player-db:
     image: postgres:16-alpine
     container_name: player-db
@@ -37,7 +35,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # FranchiseApp (Categories) microservice
   franchise-app:
     build:
       context: ./microservices/FranchiseApp
@@ -45,12 +42,13 @@ services:
     container_name: franchise-app
     environment:
       SERVER_PORT: 8083
-      DATABASE_URL: jdbc:postgresql://franchise-db:5432/franchisedb
-      DATABASE_USERNAME: franchiseuser
-      DATABASE_PASSWORD: franchisepass
-      DATABASE_DRIVER: org.postgresql.Driver
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      DDL_AUTO: create
+      SPRING_DATASOURCE_URL: jdbc:postgresql://franchise-db:5432/franchisedb
+      SPRING_DATASOURCE_USERNAME: franchiseuser
+      SPRING_DATASOURCE_PASSWORD: franchisepass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      PLAYER_APP_URL: http://player-app:8082
     ports:
       - "8083:8083"
     depends_on:
@@ -60,7 +58,6 @@ services:
       - nba-network
     restart: unless-stopped
 
-  # PlayerApp (Elements) microservice
   player-app:
     build:
       context: ./microservices/PlayerApp
@@ -68,13 +65,13 @@ services:
     container_name: player-app
     environment:
       SERVER_PORT: 8082
-      DATABASE_URL: jdbc:postgresql://player-db:5432/playerdb
-      DATABASE_USERNAME: playeruser
-      DATABASE_PASSWORD: playerpass
-      DATABASE_DRIVER: org.postgresql.Driver
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_URL: jdbc:postgresql://player-db:5432/playerdb
+      SPRING_DATASOURCE_USERNAME: playeruser
+      SPRING_DATASOURCE_PASSWORD: playerpass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       FRANCHISE_APP_URL: http://franchise-app:8083
-      DDL_AUTO: create
     ports:
       - "8082:8082"
     depends_on:
@@ -86,7 +83,6 @@ services:
       - nba-network
     restart: unless-stopped
 
-  # GatewayApp microservice
   gateway-app:
     build:
       context: ./microservices/GatewayApp
@@ -105,7 +101,6 @@ services:
       - nba-network
     restart: unless-stopped
 
-  # Angular frontend
   angular-frontend:
     build:
       context: ./angular-frontend

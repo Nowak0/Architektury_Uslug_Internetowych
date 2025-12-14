@@ -14,7 +14,7 @@ import java.util.List;
 public class FranchiseClient {
     private final RestTemplate restTemplate;
     
-    @Value("${franchise.app.url:http://localhost:8083}")
+    @Value("${franchise.app.url}")
     private String franchiseAppUrl;
 
     public List<Franchise> syncFranchises() {

@@ -20,7 +20,6 @@ public class DataInitializer {
 
     @PostConstruct
     public void initData() {
-        // Check if data already exists
         if (franchiseRepository.count() > 0) {
             System.out.println("Data already exists, skipping initialization. Found " + franchiseRepository.count() + " franchise(s).");
             return;
