@@ -33,7 +33,6 @@ public class FranchiseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFranchise(@PathVariable UUID id) {
         Optional<Franchise> f = franchiseService.findById(id);
-//
         franchiseService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -45,11 +44,3 @@ public class FranchiseController {
                 .toList();
     }
 }
-//if (f.isEmpty()) {return ResponseEntity.notFound().build();}
-//        List<Player> players = new ArrayList<>();
-//        players = playerService.findAll();
-//        for (Player player : players) {
-//            if (player.getFranchise().getId() == id) {
-//                playerService.deleteById(player.getId());
-//            }
-//        }

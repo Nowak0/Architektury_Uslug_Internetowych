@@ -6,6 +6,7 @@ import nba.project.dto.franchise.FranchiseCreateUpdateDTO;
 import nba.project.entity.Franchise;
 import nba.project.repository.FranchiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +17,8 @@ import java.util.UUID;
 @Service
 public class FranchiseService {
     private final FranchiseRepository franchiseRepository;
-    private final String playerAppUrl = "http://localhost:8082/api/franchises";
+    @Value("${player.app.url}")
+    private String playerAppUrl;
     private final RestTemplate restTemplate;
 
     public FranchiseService(FranchiseRepository franchiseRepository, RestTemplate restTemplate) {
@@ -63,10 +65,12 @@ public class FranchiseService {
     }
 
     public void notifyAdd(Franchise franchise) {
-        restTemplate.postForObject(playerAppUrl, franchise, Void.class);
+        String url = this.playerAppUrl + "/api/franchises";
+        restTemplate.postForObject(url, franchise, Void.class);
     }
 
     public void notifyDelete(UUID franchiseId) {
-        restTemplate.delete(playerAppUrl + "/" + franchiseId);
+        String url = this.playerAppUrl + "/api/franchises";
+        restTemplate.delete(url + "/" + franchiseId);
     }
 }

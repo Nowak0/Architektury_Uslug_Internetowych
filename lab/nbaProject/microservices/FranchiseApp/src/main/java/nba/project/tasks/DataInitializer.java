@@ -20,6 +20,11 @@ public class DataInitializer {
 
     @PostConstruct
     public void initData() {
+        if (franchiseRepository.count() > 0) {
+            System.out.println("Data already exists, skipping initialization. Found " + franchiseRepository.count() + " franchise(s).");
+            return;
+        }
+
         System.out.println("Initializing Data...");
 
         Franchise warriors = Franchise.builder()
@@ -45,6 +50,6 @@ public class DataInitializer {
         franchises.add(sixers);
         franchiseRepository.saveAll(franchises);
 
-        System.out.println("Data initialized");
+        System.out.println("Data initialized successfully. Created " + franchises.size() + " franchise(s).");
     }
 }

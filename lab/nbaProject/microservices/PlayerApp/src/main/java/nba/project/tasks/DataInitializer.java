@@ -31,47 +31,58 @@ public class DataInitializer {
 
     @PostConstruct
     public void initData() {
+        // Check if data already exists
+        if (playerRepository.count() > 0) {
+            System.out.println("Data already exists, skipping initialization. Found " + playerRepository.count() + " player(s).");
+            return;
+        }
+
         System.out.println("Initializing Data...");
 
-		List<Franchise> franchises = franchiseClient.syncFranchises();
-		franchiseRepository.saveAll(franchises);
-		List<Player> players = new ArrayList<>();
-		Random random = new Random();
+        try {
+            List<Franchise> franchises = franchiseClient.syncFranchises();
+            franchiseRepository.saveAll(franchises);
+            List<Player> players = new ArrayList<>();
+            Random random = new Random();
 
-        Player butler = Player.builder()
-				.id(UUID.randomUUID())
-				.firstName("Jimmy")
-				.lastName("Butler")
-				.age(36)
-				.position(Position.FORWARD)
-				.build();
+            Player butler = Player.builder()
+                    .id(UUID.randomUUID())
+                    .firstName("Jimmy")
+                    .lastName("Butler")
+                    .age(36)
+                    .position(Position.FORWARD)
+                    .build();
 
-		Player embiid = Player.builder()
-				.id(UUID.randomUUID())
-				.firstName("VJ")
-				.lastName("Edgecombe")
-				.age(20)
-				.position(Position.CENTER)
-				.build();
+            Player embiid = Player.builder()
+                    .id(UUID.randomUUID())
+                    .firstName("VJ")
+                    .lastName("Edgecombe")
+                    .age(20)
+                    .position(Position.CENTER)
+                    .build();
 
-		Player maxey = Player.builder()
-				.id(UUID.randomUUID())
-				.firstName("Tyrese")
-				.lastName("Maxey")
-				.age(24)
-				.position(Position.GUARD)
-				.build();
+            Player maxey = Player.builder()
+                    .id(UUID.randomUUID())
+                    .firstName("Tyrese")
+                    .lastName("Maxey")
+                    .age(24)
+                    .position(Position.GUARD)
+                    .build();
 
-        players.add(butler);
-        players.add(embiid);
-        players.add(maxey);
+            players.add(butler);
+            players.add(embiid);
+            players.add(maxey);
 
-		for (Player player : players) {
-			player.setFranchise(franchises.get(random.nextInt(franchises.size())));
-		}
+            for (Player player : players) {
+                player.setFranchise(franchises.get(random.nextInt(franchises.size())));
+            }
 
-        playerRepository.saveAll(players);
+            playerRepository.saveAll(players);
 
-        System.out.println("Data initialized");
+            System.out.println("Data initialized successfully. Created " + players.size() + " player(s).");
+        } catch (Exception e) {
+            System.err.println("Failed to initialize data: " + e.getMessage());
+            System.err.println("This may happen if FranchiseApp is not available. Data will be initialized on next restart.");
+        }
     }
 }

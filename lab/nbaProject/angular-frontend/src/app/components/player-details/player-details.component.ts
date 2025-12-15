@@ -96,7 +96,7 @@ export class PlayerDetailsComponent implements OnInit {
         this.playerService.transferPlayer(this.playerId, this.selectedFranchiseId).subscribe({
             next: () => {
                 this.transferLoading = true;
-                this.transferSuccess = `${playerFullName} has been trasferred to ${targetFranchise?.name || 'new franchise'}`;
+                this.transferSuccess = `${playerFullName} has been transferred to ${targetFranchise?.name || 'new franchise'}`;
 
                 this.franchiseId = this.selectedFranchiseId;
                 if (this.player) {
